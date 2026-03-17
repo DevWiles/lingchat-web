@@ -26,7 +26,7 @@ export default function Welcome() {
                     LingChat
                 </h1>
                 <p className="text-white/80 text-xl font-light">
-                    灵信轻聊 — 开启您的聊天之旅
+                    灵雀轻聊 — 开启您的聊天之旅
                 </p>
             </div>
 
@@ -35,7 +35,7 @@ export default function Welcome() {
                 {/* 登录按钮 */}
                 <button
                     onClick={() => navigate('/login')}
-                    className={`px-16 py-4 bg-white/90 backdrop-blur-sm text-indigo-600 font-semibold rounded-full shadow-2xl hover:shadow-3xl transform transition-all duration-700 ease-out hover:scale-105 hover:bg-white ${
+                    className={`px-16 py-4 bg-white/90 backdrop-blur-sm text-teal-600 font-semibold rounded-full shadow-2xl hover:shadow-3xl transform transition-all duration-700 ease-out hover:scale-105 hover:bg-white ${
                         visible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
                     }`}
                     style={{ transitionDelay: '0.2s' }}
@@ -51,7 +51,7 @@ export default function Welcome() {
                 {/* 注册按钮 */}
                 <button
                     onClick={() => navigate('/register')}
-                    className={`px-16 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-full shadow-2xl hover:shadow-3xl transform transition-all duration-700 ease-out hover:scale-105 hover:from-indigo-700 hover:to-purple-700 ${
+                    className={`px-16 py-4 bg-teal-600 text-white font-semibold rounded-full shadow-2xl hover:shadow-3xl transform transition-all duration-700 ease-out hover:scale-105 hover:bg-teal-700 ${
                         visible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
                     }`}
                     style={{ transitionDelay: '0.4s' }}
