@@ -3,6 +3,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import Welcome from './pages/Welcome';
+import Friends from './pages/Friends';
+import AuthGuard from "./components/AuthGuardProps.tsx";
 
 function App() {
     return (
@@ -11,7 +13,8 @@ function App() {
                 <Route path="/" element={<Welcome />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/home" element={<Home />} />
+                <Route path="/home" element={<AuthGuard><Home /></AuthGuard>}></Route>
+                <Route path="/home" element={<AuthGuard><Friends /></AuthGuard>}></Route>
             </Routes>
         </BrowserRouter>
     );

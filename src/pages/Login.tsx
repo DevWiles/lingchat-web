@@ -16,20 +16,30 @@ export default function Login() {
             return;
         }
 
+        setLoading(true);
+        setError('');
+
         try {
-            setLoading(true);
-            setError('');
+
             const res = await login(username, password);
-            localStorage.setItem('token', res.data.token);
+            const token = res.data.data.token;
+            if (!token) {
+                setError('没有传入 jwt token');
+            }
+
+            localStorage.setItem('token', token);
+            console.log('token写入localStorage：' + token);
+
             
             // 显示成功提示
             setShowSuccess(true);
             
-            // 0.8 秒后淡出并跳转
+            // 0.5 秒后淡出并跳转
             setTimeout(() => {
                 setShowSuccess(false);
                 navigate('/home');
-            }, 800);
+            }, 500);
+
         } catch (e: any) {
             setError(e.response?.data?.message || '登录失败，请检查用户名和密码');
         } finally {
