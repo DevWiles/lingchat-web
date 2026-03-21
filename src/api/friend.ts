@@ -2,7 +2,7 @@ import { apiClient } from './auth';
 
 // 获取好友列表
 export const getFriendList = async () => {
-    return apiClient.get('/friend');
+    return apiClient.get('/friend/list');
 };
 
 // 搜索用户

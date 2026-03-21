@@ -27,9 +27,9 @@ apiClient.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
-            // token 过期或无效，清除 token 并跳转到登录页
+            // token 过期或无效，清除 token
             localStorage.removeItem('token');
-            window.location.href = '/login';
+            // 不再自动跳转，由页面组件自行处理
         }
         return Promise.reject(error);
     }

@@ -14,7 +14,6 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/home" element={<AuthGuard><Home /></AuthGuard>}></Route>
-                <Route path="/home" element={<AuthGuard><Friends /></AuthGuard>}></Route>
             </Routes>
         </BrowserRouter>
     );
