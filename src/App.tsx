@@ -4,6 +4,7 @@ import Register from './pages/Register';
 import Home from './pages/Home';
 import Welcome from './pages/Welcome';
 import Friends from './pages/Friends';
+import Profile from './pages/Profile';
 import AuthGuard from "./components/AuthGuardProps.tsx";
 
 function App() {
@@ -13,7 +14,9 @@ function App() {
                 <Route path="/" element={<Welcome />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/home" element={<AuthGuard><Home /></AuthGuard>}></Route>
+                <Route path="/home" element={<AuthGuard><Home /></AuthGuard>} />
+                <Route path="/friends" element={<AuthGuard><Friends /></AuthGuard>} />
+                <Route path="/profile" element={<AuthGuard><Profile /></AuthGuard>} />
             </Routes>
         </BrowserRouter>
     );

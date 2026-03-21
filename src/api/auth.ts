@@ -43,4 +43,19 @@ export const login = async (username: string, password: string) => {
     return apiClient.post('/auth/login', { username, password });
 };
 
+/**
+ * 从存储的 JWT token 中解析 userId
+ * JWT payload 是 Base64URL 编码，中间部分是 claims
+ */
+export const getUserIdFromToken = (): number | null => {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+        return payload.userId ?? null;
+    } catch {
+        return null;
+    }
+};
+
 export { apiClient };

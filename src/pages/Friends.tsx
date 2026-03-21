@@ -3,17 +3,19 @@ import { getFriendList, getFriendRequests, handleFriendRequest, removeFriend } f
 import AddFriendModal from '../components/AddFriendModal';
 
 interface Friend {
-    id: number;
+    userId: number;
     username: string;
-    email?: string;
+    nickname?: string;
+    avatar?: string;
+    remark?: string;
+    signature?: string;
 }
 
 interface FriendRequest {
     id: number;
-    fromUser: {
-        id: number;
-        username: string;
-    };
+    senderId: number;
+    senderNickname: string;
+    message?: string;
 }
 
 export default function Friends() {
@@ -36,8 +38,8 @@ export default function Friends() {
                 getFriendList(),
                 getFriendRequests()
             ]);
-            setFriends(friendsRes.data || []);
-            setRequests(requestsRes.data || []);
+            setFriends(friendsRes.data?.data || []);
+            setRequests(requestsRes.data?.data || []);
         } catch (e: any) {
             setError(e.response?.data?.message || '加载失败，请稍后重试');
         } finally {
@@ -49,7 +51,7 @@ export default function Friends() {
         try {
             await handleFriendRequest(requestId, true);
             setRequests(requests.filter(r => r.id !== requestId));
-            loadData(); // 重新加载好友列表
+            loadData();
         } catch (e: any) {
             setError(e.response?.data?.message || '操作失败');
             setTimeout(() => setError(''), 3000);
@@ -71,12 +73,14 @@ export default function Friends() {
 
         try {
             await removeFriend(friendId);
-            setFriends(friends.filter(f => f.id !== friendId));
+            setFriends(friends.filter(f => f.userId !== friendId));
         } catch (e: any) {
             setError(e.response?.data?.message || '删除失败');
             setTimeout(() => setError(''), 3000);
         }
     };
+
+    const getDisplayName = (friend: Friend) => friend.remark || friend.nickname || friend.username || '未知用户';
 
     return (
         <div className="flex h-screen bg-gray-100">
@@ -161,20 +165,20 @@ export default function Friends() {
                                 <div className="space-y-2">
                                     {friends.map((friend) => (
                                         <div
-                                            key={friend.id}
+                                            key={friend.userId}
                                             className="flex items-center justify-between p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group"
                                         >
                                             <div className="flex items-center gap-3">
                                                 <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
-                                                    {friend.username[0]?.toUpperCase() || 'F'}
+                                                    {getDisplayName(friend)[0]?.toUpperCase() || 'F'}
                                                 </div>
                                                 <div>
-                                                    <p className="font-semibold text-gray-800">{friend.username}</p>
-                                                    {friend.email && <p className="text-xs text-gray-500">{friend.email}</p>}
+                                                    <p className="font-semibold text-gray-800">{getDisplayName(friend)}</p>
+                                                    {friend.signature && <p className="text-xs text-gray-500">{friend.signature}</p>}
                                                 </div>
                                             </div>
                                             <button
-                                                onClick={() => handleRemoveFriend(friend.id)}
+                                                onClick={() => handleRemoveFriend(friend.userId)}
                                                 className="opacity-0 group-hover:opacity-100 text-red-500 hover:text-red-600 transition-opacity p-2"
                                                 title="删除好友"
                                             >
@@ -207,11 +211,13 @@ export default function Friends() {
                                         >
                                             <div className="flex items-center gap-3 mb-3">
                                                 <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
-                                                    {request.fromUser.username[0]?.toUpperCase() || 'U'}
+                                                    {(request.senderNickname || '?')[0]?.toUpperCase()}
                                                 </div>
                                                 <div>
-                                                    <p className="font-semibold text-gray-800">{request.fromUser.username}</p>
-                                                    <p className="text-xs text-gray-500">想添加你为好友</p>
+                                                    <p className="font-semibold text-gray-800">{request.senderNickname}</p>
+                                                    <p className="text-xs text-gray-500">
+                                                        {request.message ? request.message : '想添加你为好友'}
+                                                    </p>
                                                 </div>
                                             </div>
                                             <div className="flex gap-2">
@@ -252,6 +258,7 @@ export default function Friends() {
             <AddFriendModal
                 isOpen={isAddModalOpen}
                 onClose={() => setIsAddModalOpen(false)}
+                onSuccess={loadData}
             />
         </div>
     );
